@@ -3,6 +3,8 @@ package com.example.fastcampusmysql.domain.member.service;
 import com.example.fastcampusmysql.domain.member.dto.MemberDto;
 import com.example.fastcampusmysql.domain.member.dto.RegisterMemberCommand;
 import com.example.fastcampusmysql.domain.member.entity.Member;
+import com.example.fastcampusmysql.domain.member.entity.MemberNicknameHistory;
+import com.example.fastcampusmysql.domain.member.repository.MemberNicknameHistoryRepository;
 import com.example.fastcampusmysql.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,9 +13,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class MemberWriteService { // 읽기 쓰기 분리를 위해 Write/Read Service 분리하였음
     private final MemberRepository memberRepository;
+    private final MemberNicknameHistoryRepository memberNicknameHistoryRepository;
 
     /**
      * 회원 정보(이메일, 닉네임, 생년월일) 등록
+     * 히스토리 저장
      */
     public MemberDto register(RegisterMemberCommand command){
         Member member = Member.builder()
@@ -22,7 +26,32 @@ public class MemberWriteService { // 읽기 쓰기 분리를 위해 Write/Read S
                 .birthday(command.birthday())
                 .build();
 
-        return toDto(memberRepository.save(member));
+        Member saveMember = memberRepository.save(member);
+        saveMemberNicknameHistory(saveMember);
+
+        return toDto(saveMember);
+    }
+
+    /**
+     * 1. 회원의 이름을 변경
+     * 2. 변경 내역을 저장
+     * @param memberId
+     * @param nickname
+     */
+    public void changeNickname(Long memberId, String nickname) {
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        member.changeNickname(nickname);
+        memberRepository.save(member);
+
+        saveMemberNicknameHistory(member);
+    }
+
+    private void saveMemberNicknameHistory(Member member) {
+        MemberNicknameHistory history = MemberNicknameHistory.builder()
+                .memberId(member.getId())
+                .nickname(member.getNickname())
+                .build();
+        memberNicknameHistoryRepository.save(history);
     }
 
     public MemberDto toDto(Member member){
