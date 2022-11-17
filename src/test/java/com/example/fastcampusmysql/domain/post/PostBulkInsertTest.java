@@ -21,8 +21,8 @@ public class PostBulkInsertTest {
     @Test
     public void bulkInsert() {
         EasyRandom easyRandom = PostFixtureFactory.get(
-                2L,
-                LocalDate.of(2022, 1, 1),
+                3L,
+                LocalDate.of(1970, 1, 1),
                 LocalDate.of(2022, 2, 1)
         );
 
@@ -41,7 +41,7 @@ public class PostBulkInsertTest {
 
         stopWatch.start();
         int _1만 = 10000;
-        List<Post> posts = IntStream.range(0, _1만 * 100)
+        List<Post> posts = IntStream.range(0, _1만 * 200)
                 .parallel() // 병렬로 실행
                 .mapToObj(i -> easyRandom.nextObject(Post.class))
                 .toList();
