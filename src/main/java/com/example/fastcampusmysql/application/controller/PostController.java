@@ -39,6 +39,9 @@ public class PostController {
     // 스웨거로 호출하면 "Required request body is missing" 에러 발생.
     // 테스트코드로 호출할 땐 requestBody값 잘 들어오는 걸로 보아
     // 스웨거에서 호출할 때 accept나 contentType쪽에서 뭔가 문제가 있지 않을까 싶은?
+    // curl -X 'GET' \
+    //  'http://localhost:8080/posts/daily-post-counts?memberId=2&firstDate=2022-11-13&lastDate=2022-11-13' \
+    //  -H 'accept: */*' <- 이게 관련있나?
 //    @GetMapping("/daily-post-counts")
 //    public List<DailyPostCount> getDailyPostCounts(@RequestBody DailyPostCountRequest request){
 //        log.info("request = {}", request);
