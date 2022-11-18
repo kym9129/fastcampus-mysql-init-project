@@ -4,6 +4,7 @@ import com.example.fastcampusmysql.domain.post.entity.Post;
 import com.example.fastcampusmysql.domain.post.repository.PostRepository;
 import com.example.fastcampusmysql.utill.PostFixtureFactory;
 import org.jeasy.random.EasyRandom;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,7 @@ public class PostBulkInsertTest {
     private PostRepository postRepository;
 
     @Test
+    @Disabled
     public void bulkInsert() {
         EasyRandom easyRandom = PostFixtureFactory.get(
                 3L,

@@ -3,10 +3,14 @@ package com.example.fastcampusmysql.application.controller;
 import com.example.fastcampusmysql.domain.post.dto.DailyPostCount;
 import com.example.fastcampusmysql.domain.post.dto.DailyPostCountRequest;
 import com.example.fastcampusmysql.domain.post.dto.PostCommand;
+import com.example.fastcampusmysql.domain.post.entity.Post;
 import com.example.fastcampusmysql.domain.post.service.PostReadService;
 import com.example.fastcampusmysql.domain.post.service.PostWriteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,4 +51,15 @@ public class PostController {
 //        log.info("request = {}", request);
 //        return postReadService.getDailyPostCounts(request);
 //    }
+
+    @GetMapping("/members/{memberId}")
+    public Page<Post> getPosts(
+            @PathVariable long memberId,
+//            @RequestParam int page,
+//            @RequestParam int size
+            Pageable pageable
+    ) {
+//        return postReadService.getPosts(memberId, PageRequest.of(page, size));
+        return postReadService.getPosts(memberId, pageable);
+    }
 }
