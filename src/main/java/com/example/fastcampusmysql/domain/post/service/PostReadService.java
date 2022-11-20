@@ -30,11 +30,21 @@ public class PostReadService {
     public PageCursor<Post> getPosts(long memberId, CursorRequest cursorRequest) {
         List<Post> posts = findAllBy(memberId, cursorRequest);
         // 반환한 데이터에서 가장 작은 key값을 추출. 없으면 NONE_KEY 리턴
-        Long nextKey = posts.stream()
+        Long nextKey = getNextKey(posts);
+        return new PageCursor<>(cursorRequest.next(nextKey), posts);
+    }
+
+    public PageCursor<Post> getPosts(List<Long> memberIds, CursorRequest cursorRequest) {
+        List<Post> posts = findAllBy(memberIds, cursorRequest);
+        Long nextKey = getNextKey(posts);
+        return new PageCursor<>(cursorRequest.next(nextKey), posts);
+    }
+
+    private long getNextKey(List<Post> posts) {
+        return posts.stream()
                 .mapToLong(Post::getId)
                 .min()
                 .orElse(CursorRequest.NONE_KEY);
-        return new PageCursor<>(cursorRequest.next(nextKey), posts);
     }
 
     private List<Post> findAllBy(long memberId, CursorRequest cursorRequest) {
@@ -42,5 +52,12 @@ public class PostReadService {
             return postRepository.findAllByLessThenIdAndMemberIdOrderByIdDesc(cursorRequest.key(), memberId, cursorRequest.size());
         }
         return postRepository.findAllByMemberIdOrderByIdDesc(memberId, cursorRequest.size());
+    }
+
+    private List<Post> findAllBy(List<Long> memberIds, CursorRequest cursorRequest) {
+        if(cursorRequest.hasKey()) {
+            return postRepository.findAllByLessThenIdAndInMemberIdsOrderByIdDesc(cursorRequest.key(), memberIds, cursorRequest.size());
+        }
+        return postRepository.findAllByInMemberIdsOrderByIdDesc(memberIds, cursorRequest.size());
     }
 }
