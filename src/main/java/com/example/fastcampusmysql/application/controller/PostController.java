@@ -1,5 +1,6 @@
 package com.example.fastcampusmysql.application.controller;
 
+import com.example.fastcampusmysql.application.usecase.CreatePostUsecase;
 import com.example.fastcampusmysql.application.usecase.GetTimelinePost;
 import com.example.fastcampusmysql.domain.post.dto.DailyPostCount;
 import com.example.fastcampusmysql.domain.post.dto.DailyPostCountRequest;
@@ -28,10 +29,12 @@ public class PostController {
     private final PostWriteService postWriteService;
     private final PostReadService postReadService;
     private final GetTimelinePost getTimelinePost;
+    private final CreatePostUsecase createPostUsecase;
 
     @PostMapping("")
     public Long create(PostCommand command) {
-        return postWriteService.create(command);
+//        return postWriteService.create(command);
+        return createPostUsecase.execute(command);
     }
 
     @GetMapping("/daily-post-counts")
@@ -80,6 +83,7 @@ public class PostController {
             @PathVariable long memberId,
             CursorRequest cursorRequest
     ) {
-        return getTimelinePost.execute(memberId, cursorRequest);
+//        return getTimelinePost.execute(memberId, cursorRequest);
+        return getTimelinePost.executeTimeline(memberId, cursorRequest); // push model로 변경
     }
 }

@@ -20,6 +20,13 @@ public class FollowReadService {
                 .toList();
     }
 
+    public List<FollowDto> getFollowers(Long memberId) {
+        List<Follow> follows = followRepository.findAllByToMemberId(memberId);
+        return follows.stream()
+                .map(this::toDto)
+                .toList();
+    }
+
     private FollowDto toDto(Follow follow){
         return new FollowDto(
                 follow.getId(),
