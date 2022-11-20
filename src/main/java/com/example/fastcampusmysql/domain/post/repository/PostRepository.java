@@ -1,6 +1,6 @@
 package com.example.fastcampusmysql.domain.post.repository;
 
-import com.example.fastcampusmysql.domain.PageHelper;
+import com.example.fastcampusmysql.util.PageHelper;
 import com.example.fastcampusmysql.domain.post.dto.DailyPostCount;
 import com.example.fastcampusmysql.domain.post.dto.DailyPostCountRequest;
 import com.example.fastcampusmysql.domain.post.entity.Post;
@@ -72,6 +72,36 @@ public class PostRepository {
         List<Post> posts = namedParameterJdbcTemplate.query(sql, params, ROW_MAPPER);
 
         return new PageImpl(posts, pageable, getCount(memberId));
+    }
+
+    public List<Post> findAllByMemberIdOrderByIdDesc(long memberId, int size) {
+        String sql = String.format("""
+                SELECT *
+                FROM %s
+                WHERE memberId = :memberId
+                ORDER BY id DESC
+                LIMIT :size
+                """, TABLE);
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("memberId", memberId)
+                .addValue("size", size);
+        return namedParameterJdbcTemplate.query(sql, params, ROW_MAPPER);
+    }
+
+    public List<Post> findAllByLessThenIdAndMemberIdOrderByIdDesc(long id, long memberId, int size) {
+        String sql = String.format("""
+                SELECT *
+                FROM %s
+                WHERE memberId = :memberId
+                  AND id < :id 
+                ORDER BY id DESC
+                LIMIT :size
+                """, TABLE);
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("memberId", memberId)
+                .addValue("id", id)
+                .addValue("size", size);
+        return namedParameterJdbcTemplate.query(sql, params, ROW_MAPPER);
     }
 
     private Long getCount(Long memberId) {
