@@ -8,6 +8,7 @@ import com.example.fastcampusmysql.domain.member.repository.MemberNicknameHistor
 import com.example.fastcampusmysql.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -19,6 +20,7 @@ public class MemberWriteService { // 읽기 쓰기 분리를 위해 Write/Read S
      * 회원 정보(이메일, 닉네임, 생년월일) 등록
      * 히스토리 저장
      */
+    @Transactional
     public MemberDto register(RegisterMemberCommand command){
         Member member = Member.builder()
                 .nickname(command.nickname())
