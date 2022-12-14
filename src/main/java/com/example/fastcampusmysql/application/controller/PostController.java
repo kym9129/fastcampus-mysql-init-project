@@ -86,4 +86,9 @@ public class PostController {
 //        return getTimelinePost.execute(memberId, cursorRequest);
         return getTimelinePost.executeTimeline(memberId, cursorRequest); // push model로 변경
     }
+
+    @PostMapping("/{postId}/like")
+    public void likePost(@PathVariable Long postId) {
+        postWriteService.likeCount(postId);
+    }
 }
