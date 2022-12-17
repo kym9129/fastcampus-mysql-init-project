@@ -41,6 +41,7 @@ public class PostRepository {
             .memberId(resultSet.getLong("memberId"))
             .contents(resultSet.getString("contents"))
             .likeCount(resultSet.getLong("likeCount"))
+            .version(resultSet.getLong("version"))
             .createdDate(resultSet.getObject("createdDate", LocalDate.class))
             .createdAt(resultSet.getObject("createdAt", LocalDateTime.class))
             .build();
@@ -222,11 +223,17 @@ public class PostRepository {
             contents = :contents,
             likeCount = :likeCount,
             createdDate = :createdDate,
-            createdAt = :createdAt
+            createdAt = :createdAt,
+            version = :version + 1
         WHERE id = :id
+        AND version = :version
         """, TABLE);
         SqlParameterSource params = new BeanPropertySqlParameterSource(post);
-        namedParameterJdbcTemplate.update(sql, params);
+        int updatedCount = namedParameterJdbcTemplate.update(sql, params);
+        // 업데이트 한 레코드 수 리턴
+        if(updatedCount == 0){
+            throw new RuntimeException("갱신실패");
+        }
         return post;
     }
 }

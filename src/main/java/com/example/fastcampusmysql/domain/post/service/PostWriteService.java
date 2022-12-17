@@ -22,8 +22,14 @@ public class PostWriteService {
     }
 
     @Transactional
-    public void likeCount(Long postId) {
+    public void likePost(Long postId) {
         Post post = postRepository.findById(postId, true).orElseThrow();
+        post.incrementLikeCount();
+        postRepository.save(post);
+    }
+
+    public void likePostByOptimisticLock(Long postId) {
+        Post post = postRepository.findById(postId, false).orElseThrow();
         post.incrementLikeCount();
         postRepository.save(post);
     }
