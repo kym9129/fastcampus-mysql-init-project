@@ -24,10 +24,16 @@ public class PostFixtureFactory {
                 .and(ofType(Long.class))
                 .and(inClass(Post.class));
 
+        Predicate<Field> active = named("active")
+                .and(ofType(String.class))
+                .and(inClass(Post.class));
+
         EasyRandomParameters param = new EasyRandomParameters()
                 .excludeField(idPredicate) // id : null 반환
                 .dateRange(firstDate, lastDate) // createDate : firstDate, lastDate 사이의 랜덤값 반환
-                .randomize(memberIdPredicate, () -> memberId); // memberId : 주입받은 memberId 반환
+                .randomize(memberIdPredicate, () -> memberId) // memberId : 주입받은 memberId 반환
+                .excludeField(active);
+
 
         return new EasyRandom(param);
     }
