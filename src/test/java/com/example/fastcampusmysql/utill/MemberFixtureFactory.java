@@ -4,8 +4,10 @@ import com.example.fastcampusmysql.domain.member.entity.Member;
 import com.example.fastcampusmysql.domain.member.entity.MemberNicknameHistory;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
+import org.jeasy.random.randomizers.time.LocalDateTimeRandomizer;
 
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -18,7 +20,14 @@ public class MemberFixtureFactory {
     // -> fixture 라이브러리를 많이 사용한다. (ex. easy-random)
 
     public static Member create(){
-        EasyRandomParameters param = new EasyRandomParameters();
+        Predicate<Field> idPredicate = named("id")
+                .and(ofType(Long.class))
+                .and(inClass(Member.class));
+        EasyRandomParameters param = new EasyRandomParameters()
+                .excludeField(idPredicate) // id is null
+                .stringLengthRange(5, 10)
+                .randomize(LocalDateTime.class, new LocalDateTimeRandomizer())
+                ;
         return new EasyRandom(param).nextObject(Member.class);
     }
 
