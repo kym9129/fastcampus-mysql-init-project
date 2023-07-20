@@ -1,45 +1,49 @@
-create table Member
+create table member
 (
-    id int auto_increment,
+    id bigint auto_increment,
     email varchar(20) not null,
     nickname varchar(20) not null,
     birthday date not null,
-    createdAt datetime not null,
+    created_at datetime not null,
+    updated_at datetime not null,
     constraint member_id_uindex
         primary key (id)
 );
 
-create table MemberNicknameHistory
+create table member_nickname_history
 (
-    id int auto_increment,
-    memberId int not null,
+    id bigint auto_increment,
+    member_id bigint not null,
     nickname varchar(20) not null,
-    createdAt datetime not null,
-    constraint memberNicknameHistory_id_uindex
+    created_at datetime not null,
+    updated_at datetime not null,
+    constraint member_nickname_history_id_uindex
         primary key (id)
 );
 
-create table Follow
+create table follow
 (
-    id int auto_increment,
-    fromMemberId int not null,
-    toMemberId int not null,
-    createdAt datetime not null,
+    id bigint auto_increment,
+    from_member_id bigint not null,
+    to_member_id bigint not null,
+    created_at datetime not null,
+    updated_at datetime not null,
     constraint Follow_id_uindex
         primary key (id)
 );
 
-create unique index Follow_fromMemberId_toMemberId_uindex
-    on Follow (fromMemberId, toMemberId);
+create unique index Follow_from_member_id_to_member_id_uindex
+    on Follow (from_member_id, to_member_id);
 
 
-create table POST
+create table post
 (
-    id int auto_increment,
-    memberId int not null,
+    id bigint auto_increment,
+    member_id bigint not null,
     contents varchar(100) not null,
-    createdDate date not null,
-    createdAt datetime not null,
+    created_date date not null,
+    created_at datetime not null,
+    updated_at datetime not null,
     constraint POST_id_uindex
         primary key (id)
 );
@@ -53,12 +57,13 @@ create index POST__index_created_date
 create index POST__index_member_id_created_date
     on POST (memberId, createdDate);
 
-create table Timeline
+create table timeline
 (
-    id int auto_increment,
-    memberId int not null,
-    postId int not null,
-    createdAt datetime not null,
+    id bigint auto_increment,
+    member_id bigint not null,
+    post_id bigint not null,
+    created_at datetime not null,
+    updated_at datetime not null,
     constraint Timeline_id_uindex
         primary key (id)
 );

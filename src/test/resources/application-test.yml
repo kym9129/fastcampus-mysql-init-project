@@ -1,0 +1,36 @@
+spring:
+  output:
+    ansi:
+      enabled: always # console color
+  h2:
+    console:
+      enabled: true
+
+    datasource:
+      url: jdbc:h2:mem:testdb
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    defer-datasource-initialization: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE # 바인딩되는 값 출력
+      springframework:
+        jdbc:
+          core: TRACE

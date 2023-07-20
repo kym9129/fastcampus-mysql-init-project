@@ -1,17 +1,27 @@
 package com.example.fastcampusmysql.domain.follow.entity;
 
+import com.example.fastcampusmysql.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
-public class Follow {
+@Entity(name = "follow")
+public class Follow extends BaseTimeEntity {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private final Long id;
+
+    @Column(name = "from_member_id")
     private final Long fromMemberId;
+
+    @Column(name = "to_member_id")
     private final Long toMemberId;
-    private final LocalDateTime createdAt;
 
     /**
      * [고민포인트]
@@ -33,10 +43,9 @@ public class Follow {
      */
 
     @Builder
-    public Follow(Long id, Long fromMemberId, Long toMemberId, LocalDateTime createdAt) {
+    public Follow(Long id, Long fromMemberId, Long toMemberId) {
         this.id = id;
         this.fromMemberId = Objects.requireNonNull(fromMemberId);
         this.toMemberId = Objects.requireNonNull(toMemberId);
-        this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt; // 어떻게 이 중복을 제거할 수 있을지 고민해보기
     }
 }

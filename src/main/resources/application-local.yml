@@ -1,0 +1,22 @@
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              basic-binder: TRACE
+      springframework:
+        jdbc:
+          core: TRACE
+
+spring:
+  output:
+    ansi:
+      enabled: always # console color
+
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/fast_sns?rewriteBatchedStatements=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: sa
+    password: 1234

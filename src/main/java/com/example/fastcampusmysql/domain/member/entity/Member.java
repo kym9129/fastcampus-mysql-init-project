@@ -1,38 +1,43 @@
 package com.example.fastcampusmysql.domain.member.entity;
 
+import com.example.fastcampusmysql.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.util.Assert;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
-public class Member {
+@Entity(name = "member")
+public class Member extends BaseTimeEntity {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private final Long id;
 
+    @Column(name = "nickname", nullable = false, length = 20)
     private String nickname;
 
+    @Column(name = "email", nullable = false, length = 20)
     private final String email;
 
+    @Column(name = "birthday", nullable = false)
     private final LocalDate birthday;
-
-    private final LocalDateTime createdAt;
 
     private static Long NAME_MAX_LENGTH = 10L;
 
     @Builder
-    public Member(Long id, String nickname, String email, LocalDate birthday, LocalDateTime createdAt) {
+    public Member(Long id, String nickname, String email, LocalDate birthday) {
         this.id = id;
         this.email = Objects.requireNonNull(email);
         this.birthday = Objects.requireNonNull(birthday);
 
         validateNickname(nickname);
         this.nickname = Objects.requireNonNull(nickname);
-
-        this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
     }
 
     public void changeNickname(String to){
