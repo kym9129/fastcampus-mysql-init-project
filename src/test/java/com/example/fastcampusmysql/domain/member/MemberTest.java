@@ -11,6 +11,7 @@ public class MemberTest {
     @DisplayName("회원은 닉네임을 변경할 수 있다.")
     @Test
     public void testChangeName(){
+        // MemberFixtureFactory 사용 예
 //        LongStream.range(0, 10)
 //                .mapToObj(i -> MemberFixtureFactory.create(i))
 //                .forEach(member -> {
