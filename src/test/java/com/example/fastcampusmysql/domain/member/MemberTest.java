@@ -20,6 +20,8 @@ public class MemberTest {
         Member member = MemberFixtureFactory.create();
         String expectedName = "boo";
 
+        member.changeNickname(expectedName);
+
         Assertions.assertEquals(expectedName, member.getNickname());
     }
 
