@@ -22,7 +22,7 @@ public class TimelineWriteService {
                 .map((memberId) -> toTimeline(postId, memberId))
                 .toList();
 
-        timelineRepository.bulkInsert(timelines);
+        timelineRepository.saveAll(timelines);
     }
 
     private Timeline toTimeline(Long postId, Long memberId) {
