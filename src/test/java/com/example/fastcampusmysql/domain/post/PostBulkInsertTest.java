@@ -52,7 +52,8 @@ public class PostBulkInsertTest {
         StopWatch queryStopWatch = new StopWatch();
         queryStopWatch.start();
 
-        postRepository.bulkInsert(posts);
+//        postRepository.bulkInsert(posts);
+        postRepository.saveAll(posts);
 
         queryStopWatch.stop();
         System.out.println("DB INSERT 시간 : " + queryStopWatch.getTotalTimeSeconds());

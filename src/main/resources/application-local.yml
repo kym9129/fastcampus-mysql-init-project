@@ -6,7 +6,7 @@ logging:
         type:
           descriptor:
             sql:
-              basic-binder: TRACE
+              BasicBinder: TRACE # 바인딩되는 값 출력
       springframework:
         jdbc:
           core: TRACE

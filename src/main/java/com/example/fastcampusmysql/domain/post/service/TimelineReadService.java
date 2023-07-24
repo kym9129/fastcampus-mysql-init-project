@@ -5,6 +5,8 @@ import com.example.fastcampusmysql.domain.post.repository.TimelineRepository;
 import com.example.fastcampusmysql.util.CursorRequest;
 import com.example.fastcampusmysql.util.PageCursor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,9 +25,10 @@ public class TimelineReadService {
     }
 
     private List<Timeline> findAllBy(long memberId, CursorRequest cursorRequest) {
+        Pageable pageable = PageRequest.of(0, cursorRequest.size());
         if(cursorRequest.hasKey()) {
-            return timelineRepository.findAllByLessThenIdAndMemberIdOrderByIdDesc(cursorRequest.key(), memberId, cursorRequest.size());
+            return timelineRepository.findAllByMemberIdAndIdLessThanOrderByIdDesc(cursorRequest.key(), memberId, pageable);
         }
-        return timelineRepository.findAllByMemberIdAndOrderByIdDesc(memberId, cursorRequest.size());
+        return timelineRepository.findAllByMemberIdOrderByIdDesc(memberId, pageable);
     }
 }
