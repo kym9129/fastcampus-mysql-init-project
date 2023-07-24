@@ -1,8 +1,10 @@
 package com.example.fastcampusmysql.domain.follow.entity;
 
 import com.example.fastcampusmysql.domain.BaseTimeEntity;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,18 +12,19 @@ import java.util.Objects;
 
 @Getter
 @Entity(name = "follow")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Follow extends BaseTimeEntity {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final Long id;
+    private Long id;
 
     @Column(name = "from_member_id")
-    private final Long fromMemberId;
+    private Long fromMemberId;
 
     @Column(name = "to_member_id")
-    private final Long toMemberId;
+    private Long toMemberId;
 
     /**
      * [고민포인트]

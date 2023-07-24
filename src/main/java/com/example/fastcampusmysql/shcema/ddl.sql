@@ -42,6 +42,8 @@ create table post
     member_id bigint not null,
     contents varchar(100) not null,
     created_date date not null,
+    like_count bigint not null default 0,
+    version bigint not null default 0,
     created_at datetime not null,
     updated_at datetime not null,
     constraint POST_id_uindex
@@ -68,4 +70,12 @@ create table timeline
         primary key (id)
 );
 
+create table post_like(
+	id bigint auto_increment,
+    member_id bigint not null,
+    post_id bigint not null,
+    created_at datetime not null,
+    updated_at datetime not null,
+    constraint post_like_id_uindex primary key (id)
+);
 

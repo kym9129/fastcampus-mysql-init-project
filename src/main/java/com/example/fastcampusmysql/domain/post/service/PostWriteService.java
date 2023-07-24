@@ -21,15 +21,17 @@ public class PostWriteService {
         return postRepository.save(post).getId();
     }
 
-    @Transactional
-    public void likePost(Long postId) {
-        Post post = postRepository.findById(postId, true).orElseThrow();
-        post.incrementLikeCount();
-        postRepository.save(post);
-    }
+    // todo: pessimistic lock
+//    @Transactional
+//    public void likePost(Long postId) {
+//        Post post = postRepository.findById(postId, true).orElseThrow();
+//        post.incrementLikeCount();
+//        postRepository.save(post);
+//    }
 
+    @Transactional
     public void likePostByOptimisticLock(Long postId) {
-        Post post = postRepository.findById(postId, false).orElseThrow();
+        Post post = postRepository.findById(postId).orElseThrow();
         post.incrementLikeCount();
         postRepository.save(post);
     }

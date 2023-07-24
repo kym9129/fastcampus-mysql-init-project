@@ -10,6 +10,7 @@ import com.example.fastcampusmysql.util.CursorRequest;
 import com.example.fastcampusmysql.util.PageCursor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,8 @@ public class PostReadService {
                 post.getId(),
                 post.getContents(),
                 post.getCreatedAt(),
-                postLikeRepository.count(post.getId())// post 조회 때마다 매번 count 쿼리 발생
+                post.getUpdatedAt(),
+                postLikeRepository.countByPostId(post.getId())// post 조회 때마다 매번 count 쿼리 발생
                 // mapper의 로직들은 파라미터로 받는 것이 좋을 것 같음
                 // 쓰기 성능을 얻고 읽기 성능을 (많이) 잃은 트레이드오프 사례
                 // 개선 포인트
@@ -51,11 +53,11 @@ public class PostReadService {
     }
 
     public List<Post> getPosts(List<Long> ids) {
-        return postRepository.findAllByInId(ids);
+        return postRepository.findByIdIn(ids);
     }
 
     public Post getPost(Long postId){
-        return postRepository.findById(postId, false).orElseThrow();
+        return postRepository.findById(postId).orElseThrow();
     }
 
     public PageCursor<Post> getPosts(List<Long> memberIds, CursorRequest cursorRequest) {
@@ -72,16 +74,18 @@ public class PostReadService {
     }
 
     private List<Post> findAllBy(long memberId, CursorRequest cursorRequest) {
+        Pageable pageable = PageRequest.of(0, cursorRequest.size());
         if(cursorRequest.hasKey()) {
-            return postRepository.findAllByLessThenIdAndMemberIdOrderByIdDesc(cursorRequest.key(), memberId, cursorRequest.size());
+            return postRepository.findByMemberIdAndIdLessThanOrderByIdDesc(memberId, cursorRequest.key(), pageable);
         }
-        return postRepository.findAllByMemberIdOrderByIdDesc(memberId, cursorRequest.size());
+        return postRepository.findByMemberIdOrderByIdDesc(memberId, pageable);
     }
 
     private List<Post> findAllBy(List<Long> memberIds, CursorRequest cursorRequest) {
+        Pageable pageable = PageRequest.of(0, cursorRequest.size());
         if(cursorRequest.hasKey()) {
-            return postRepository.findAllByLessThenIdAndInMemberIdsOrderByIdDesc(cursorRequest.key(), memberIds, cursorRequest.size());
+            return postRepository.findAllByMemberIdInAndIdLessThanOrderByIdDesc(memberIds, cursorRequest.key(), pageable);
         }
-        return postRepository.findAllByInMemberIdsOrderByIdDesc(memberIds, cursorRequest.size());
+        return postRepository.findByMemberIdInOrderByIdDesc(memberIds, pageable);
     }
 }

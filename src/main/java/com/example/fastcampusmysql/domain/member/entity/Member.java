@@ -1,32 +1,34 @@
 package com.example.fastcampusmysql.domain.member.entity;
 
 import com.example.fastcampusmysql.domain.BaseTimeEntity;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
 @Entity(name = "member")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTimeEntity {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final Long id;
+    private Long id;
 
     @Column(name = "nickname", nullable = false, length = 20)
     private String nickname;
 
     @Column(name = "email", nullable = false, length = 20)
-    private final String email;
+    private String email;
 
     @Column(name = "birthday", nullable = false)
-    private final LocalDate birthday;
+    private LocalDate birthday;
 
     private static Long NAME_MAX_LENGTH = 10L;
 
