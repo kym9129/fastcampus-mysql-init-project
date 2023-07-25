@@ -45,11 +45,13 @@ public class PostReadService {
         );
     }
 
-    public PageCursor<Post> getPosts(long memberId, CursorRequest cursorRequest) {
+    public PageCursor<PostDto> getPosts(long memberId, CursorRequest cursorRequest) {
+        validateSize(cursorRequest.size());
         List<Post> posts = findAllBy(memberId, cursorRequest);
         // 반환한 데이터에서 가장 작은 key값을 추출. 없으면 NONE_KEY 리턴
         Long nextKey = getNextKey(posts);
-        return new PageCursor<>(cursorRequest.next(nextKey), posts);
+        List<PostDto> postDtos = posts.stream().map(this::toDto).toList();
+        return new PageCursor<>(cursorRequest.next(nextKey), postDtos);
     }
 
     public List<Post> getPosts(List<Long> ids) {
@@ -61,9 +63,16 @@ public class PostReadService {
     }
 
     public PageCursor<Post> getPosts(List<Long> memberIds, CursorRequest cursorRequest) {
+        validateSize(cursorRequest.size());
         List<Post> posts = findAllBy(memberIds, cursorRequest);
         Long nextKey = getNextKey(posts);
         return new PageCursor<>(cursorRequest.next(nextKey), posts);
+    }
+
+    private void validateSize(int size) {
+        if(size == 0) {
+            throw new IllegalArgumentException("size는 1 이상이어야 합니다.");
+        }
     }
 
     private long getNextKey(List<Post> posts) {
