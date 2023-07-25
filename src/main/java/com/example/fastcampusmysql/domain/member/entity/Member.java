@@ -32,7 +32,7 @@ public class Member extends BaseTimeEntity {
     private LocalDate birthday;
 
     @OneToMany(mappedBy = "member")
-    private List<MemberNicknameHistory> memberNicknameHistoryList;
+    private List<MemberNicknameHistory> memberNicknameHistories;
 
     private static Long NAME_MAX_LENGTH = 10L;
 

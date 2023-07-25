@@ -29,7 +29,7 @@ public class MemberReadService {
 
     public List<MemberNicknameHistoryDto> getNicknameHistory(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow();
-        return member.getMemberNicknameHistoryList()
+        return member.getMemberNicknameHistories()
                 .stream()
                 .map(this::toDto)
                 .toList();
