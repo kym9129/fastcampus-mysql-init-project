@@ -2,6 +2,7 @@ package com.example.fastcampusmysql.application.usecase;
 
 import com.example.fastcampusmysql.domain.follow.dto.FollowDto;
 import com.example.fastcampusmysql.domain.follow.service.FollowReadService;
+import com.example.fastcampusmysql.domain.post.dto.PostDto;
 import com.example.fastcampusmysql.domain.post.entity.Post;
 import com.example.fastcampusmysql.domain.post.entity.Timeline;
 import com.example.fastcampusmysql.domain.post.service.PostReadService;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 // post, follow 2가지 도메인을 사용해야 하므로 usecase를 생성했음
 @Service
@@ -39,10 +41,19 @@ public class GetTimelinePost {
      * 1. Timeline 테이블 조회
      * 2. 1번에 해당하는 게시물을 조회한다.
      */
-    public PageCursor<Post> executeTimeline(Long memberId, CursorRequest cursorRequest) {
+    public PageCursor<PostDto> executeTimeline(Long memberId, CursorRequest cursorRequest) {
         PageCursor<Timeline> pagedTimeline = timelineReadService.getTimelines(memberId, cursorRequest);
         List<Long> postIds = pagedTimeline.body().stream().map(Timeline::getPostId).toList();
-        List<Post> posts = postReadService.getPosts(postIds);
+        List<PostDto> posts = postReadService.getPosts(postIds)
+                .stream()
+                .map(post -> new PostDto(
+                        post.getId(),
+                        post.getContents(),
+                        post.getCreatedAt(),
+                        post.getUpdatedAt(),
+                        post.getLikeCount()
+                ))
+                .collect(Collectors.toList());
 
         return new PageCursor<>(pagedTimeline.nextCursorRequest(), posts);
     }
