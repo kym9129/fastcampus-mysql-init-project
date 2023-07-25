@@ -73,7 +73,7 @@ public class PostController {
     }
 
     @GetMapping("/members/{memberId}/by-cursor")
-    public PageCursor<Post> getPostsByCursor(
+    public PageCursor<PostDto> getPostsByCursor(
             @PathVariable long memberId,
             CursorRequest cursorRequest
     ) {
