@@ -21,16 +21,17 @@ public class MemberNicknameHistory extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "member_id")
-    private Long memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Column(name = "nickname", nullable = false, length = 20)
     private String nickname;
 
     @Builder
-    public MemberNicknameHistory(Long id, Long memberId, String nickname) {
+    public MemberNicknameHistory(Long id, Member member, String nickname) {
         this.id = id;
-        this.memberId = Objects.requireNonNull(memberId);
+        this.member = Objects.requireNonNull(member);
         this.nickname = Objects.requireNonNull(nickname);
     }
 }

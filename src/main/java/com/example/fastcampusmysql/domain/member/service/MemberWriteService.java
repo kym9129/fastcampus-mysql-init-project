@@ -50,7 +50,7 @@ public class MemberWriteService { // 읽기 쓰기 분리를 위해 Write/Read S
 
     private void saveMemberNicknameHistory(Member member) {
         MemberNicknameHistory history = MemberNicknameHistory.builder()
-                .memberId(member.getId())
+                .member(member)
                 .nickname(member.getNickname())
                 .build();
         memberNicknameHistoryRepository.save(history);
