@@ -81,7 +81,7 @@ public class PostController {
     }
 
     @GetMapping("/members/{memberId}/timeline")
-    public PageCursor<Post> getTimeline(
+    public PageCursor<PostDto> getTimeline(
             @PathVariable long memberId,
             CursorRequest cursorRequest
     ) {

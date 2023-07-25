@@ -28,8 +28,8 @@ public class MemberReadService {
     }
 
     public List<MemberNicknameHistoryDto> getNicknameHistory(Long memberId) {
-        return memberNicknameHistoryRepository
-                .findAllByMemberId(memberId)
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        return member.getMemberNicknameHistories()
                 .stream()
                 .map(this::toDto)
                 .toList();
@@ -42,7 +42,7 @@ public class MemberReadService {
     private MemberNicknameHistoryDto toDto(MemberNicknameHistory history) {
         return new MemberNicknameHistoryDto(
                 history.getId(),
-                history.getMemberId(),
+                history.getMember().getId(),
                 history.getNickname(),
                 history.getCreatedAt()
         );

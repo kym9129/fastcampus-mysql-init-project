@@ -9,6 +9,7 @@ import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -29,6 +30,9 @@ public class Member extends BaseTimeEntity {
 
     @Column(name = "birthday", nullable = false)
     private LocalDate birthday;
+
+    @OneToMany(mappedBy = "member")
+    private List<MemberNicknameHistory> memberNicknameHistories;
 
     private static Long NAME_MAX_LENGTH = 10L;
 
