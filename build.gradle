@@ -94,6 +94,7 @@ test {
     filter {
         // github action에서 build 할 때 통합테스트 제외
         excludeTestsMatching 'com.example.fastcampusmysql.controller.*'
+        excludeTestsMatching '*.PostBulkInsertTest'
     }
 
 }
