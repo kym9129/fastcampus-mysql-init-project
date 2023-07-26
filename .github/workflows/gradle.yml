@@ -8,8 +8,11 @@
 name: Java CI with Gradle
 
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches: [ "master" ]
+
 
 permissions:
   contents: read
