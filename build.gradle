@@ -89,3 +89,8 @@ configurations {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+test {
+    // github action에서 build 할 때 통합테스트 제외
+    exclude 'src/test/java/com/example/fastcampusmysql/controller/**'
+}

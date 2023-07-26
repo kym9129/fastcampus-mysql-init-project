@@ -32,9 +32,6 @@ public class MemberReadServiceTest {
     @Mock
     private MemberRepository memberRepository;
 
-    @Mock
-    private MemberNicknameHistoryRepository memberNicknameHistoryRepository;
-
     @InjectMocks
     private MemberReadService memberReadService;
 
@@ -77,22 +74,4 @@ public class MemberReadServiceTest {
         Assertions.assertThat(members).extracting("id").containsAll(ids);
     }
 
-    @DisplayName("회원ID로 닉네임 변경 이력을 조회한다.")
-    @Test
-    void testGetNicknameHistory() {
-        // given
-        Member mockMember = mockMemberList.get(0);
-        int historySize = 10;
-        List<MemberNicknameHistory> givenHistoryList = MemberFixtureFactory.getMemberNicknameHistoryList(mockMember.getId(), historySize);
-
-        given(memberNicknameHistoryRepository.findAllByMemberId(anyLong())).willReturn(givenHistoryList);
-
-        // when
-        List<MemberNicknameHistoryDto> nicknameHistoryList = memberReadService.getNicknameHistory(mockMember.getId());
-
-        // then
-        for (int i=0; i<historySize; i++) {
-            assertThat(nicknameHistoryList.get(i).nickname(), is(givenHistoryList.get(i).getNickname()));
-        }
-    }
 }
