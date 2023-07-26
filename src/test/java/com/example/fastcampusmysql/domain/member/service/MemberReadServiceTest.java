@@ -74,5 +74,4 @@ public class MemberReadServiceTest {
         Assertions.assertThat(members).extracting("id").containsAll(ids);
     }
 
-
 }
