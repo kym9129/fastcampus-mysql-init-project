@@ -20,11 +20,12 @@ public class MemberFixtureFactory {
     // -> fixture 라이브러리를 많이 사용한다. (ex. easy-random)
 
     public static Member create(){
-        Predicate<Field> idPredicate = named("id")
-                .and(ofType(Long.class))
-                .and(inClass(Member.class));
+//        Predicate<Field> idPredicate = named("id")
+//                .and(ofType(Long.class))
+//                .and(inClass(Member.class));
         EasyRandomParameters param = new EasyRandomParameters()
-                .excludeField(idPredicate) // id is null
+//                .excludeField(idPredicate) // id is null
+                .randomize(Long.class, new PositiveLongRandomizer()) // 양수만
                 .stringLengthRange(5, 10)
                 .randomize(LocalDateTime.class, new LocalDateTimeRandomizer())
                 ;
