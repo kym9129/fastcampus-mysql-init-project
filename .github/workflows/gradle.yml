@@ -59,6 +59,7 @@ jobs:
 #         key: ${{ secrets.KEY }}
         script: |
           sudo docker rm -f $(docker ps -qa)
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           sudo docker pull ${{ secrets.DOCKER_REPO }}/sns-project-springboot
           docker-compose up -d
           docker image prune -f
