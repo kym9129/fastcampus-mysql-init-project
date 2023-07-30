@@ -49,6 +49,10 @@ JAVA 17, SpringBoot 2.7.2, MySQL 8.0, JPA, QueryDSL, Redis 6, EasyRandom, Github
     - 테스트에 필요한 랜덤 데이터를 빠르게 생성하여 테스트코드 작성 시간 감소
 
 ### 🔥 트러블 슈팅
+- No matching manifest for linux/armv7 in the manifest list entries
+    - 문제상황 : 배포 서버에서 docker compose up 하는 도중 발생
+    - 원인 : 배포서버에 설치한 Rasbian OS는 ARM 32비트였으나 컨테이너를 띄우려는 도커 이미지들은 64비트를 지원
+    - 해결 : 64비트 Ubuntu 설치
 
 - No Default constructor for entity
     - 문제상황 : 스프링 컨테이너 실행 시 발생
