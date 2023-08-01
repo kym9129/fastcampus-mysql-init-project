@@ -7,11 +7,11 @@
 
 name: Java CI with Gradle
 
-on:
-  pull_request:
-    types:
-      - closed
-    branches: [ "master" ]
+on: workflow_dispatch # 수동실행 임시설정
+#   pull_request:
+#     types:
+#       - closed
+#     branches: [ "master" ]
 
 
 permissions:
