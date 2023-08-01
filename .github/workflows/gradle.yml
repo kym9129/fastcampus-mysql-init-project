@@ -7,11 +7,11 @@
 
 name: Java CI with Gradle
 
-on: workflow_dispatch # 수동실행 임시설정
-#   pull_request:
-#     types:
-#       - closed
-#     branches: [ "master" ]
+on:
+  pull_request:
+    types:
+      - closed
+    branches: [ "master" ]
 
 
 permissions:
@@ -44,11 +44,9 @@ jobs:
     ## 웹 이미지 빌드 및 도커허브에 push
     - name: docker build and push
       run: |
-        docker build --platform=linux/arm64 -t sns-project-springboot:latest .
-        docker save -o image.tar sns-project-springboot:latest
-        pwd
-        ls
-        sudo sshpass -p ${{ secrets.SSH_PASSWORD }} -P ${{ secrets.SSH_PORT }} ./image.tar ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        docker build -t ${{ secrets.DOCKER_REPO }}/sns-project-springboot .
+        docker push ${{ secrets.DOCKER_REPO }}/sns-project-springboot
 
     ## docker compose up
     - name: executing remote ssh commands using password
@@ -60,8 +58,8 @@ jobs:
         password: ${{ secrets.SSH_PASSWORD }}
 #         key: ${{ secrets.KEY }}
         script: |
-          cd /home/${{ secrets.SSH_USERNAME }}
           sudo docker rm -f $(docker ps -qa)
-          docker load -i image.tar
-          docker compose up -d
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          sudo docker pull ${{ secrets.DOCKER_REPO }}/sns-project-springboot
+          docker-compose up -d
           docker image prune -f
