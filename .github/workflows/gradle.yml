@@ -48,7 +48,7 @@ jobs:
         docker save -o image.tar sns-project-springboot:latest
         pwd
         ls
-        sshpass -p ${{ secrets.SSH_PASSWORD }} -P ${{ secrets.SSH_PORT }} ./image.tar ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}
+        sudo sshpass -p ${{ secrets.SSH_PASSWORD }} -P ${{ secrets.SSH_PORT }} ./image.tar ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}
 
     ## docker compose up
     - name: executing remote ssh commands using password
