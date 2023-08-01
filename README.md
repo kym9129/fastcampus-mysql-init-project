@@ -24,7 +24,8 @@
     - 좋아요 기능 : 포스트에 좋아요 등록
 
 ### 🏗️ 프로젝트 구조
-![image](https://github.com/kym9129/fastcampus-mysql-init-project/assets/72649415/972e2285-4cc5-4314-83ee-f2546a3fff35)
+<img width="940" alt="image" src="https://github.com/kym9129/fastcampus-mysql-init-project/assets/72649415/0a2f05d5-e70a-4dfa-b29f-8636386b0477">
+
 
 ### ⚒️ 사용 기술
 
