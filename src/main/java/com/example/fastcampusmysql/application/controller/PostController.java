@@ -99,4 +99,5 @@ public class PostController {
     public void likePostV2(@PathVariable Long postId, @RequestParam Long memberId) {
         createPostLikeUsecase.execute(postId, memberId);
     }
+
 }
