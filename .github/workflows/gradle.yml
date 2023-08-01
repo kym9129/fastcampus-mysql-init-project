@@ -44,9 +44,9 @@ jobs:
     ## 웹 이미지 빌드 및 도커허브에 push
     - name: docker build and push
       run: |
-        docker build -t sns-project-springboot:latest .
+        docker build --platform=linux/arm64 -t sns-project-springboot:latest .
         docker save -o image.tar sns-project-springboot:latest
-        apt-get install sshpass
+        sudo apt-get update && sudo apt-get install -y sshpass
         sshpass -p ${{ secrets.SSH_PASSWORD }} -P ${{ secrets.SSH_PORT }} image.tar ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}
 
     ## docker compose up
@@ -62,5 +62,5 @@ jobs:
           cd /home/${{ secrets.SSH_USERNAME }}
           sudo docker rm -f $(docker ps -qa)
           docker load -i image.tar
-          docker-compose up -d
+          docker compose up -d
           docker image prune -f
