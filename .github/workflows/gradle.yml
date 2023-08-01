@@ -46,7 +46,8 @@ jobs:
       run: |
         docker build --platform=linux/arm64 -t sns-project-springboot:latest .
         docker save -o image.tar sns-project-springboot:latest
-        sudo apt-get update && sudo apt-get install -y sshpass
+        pwd
+        ls
         sshpass -p ${{ secrets.SSH_PASSWORD }} -P ${{ secrets.SSH_PORT }} image.tar ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}
 
     ## docker compose up
