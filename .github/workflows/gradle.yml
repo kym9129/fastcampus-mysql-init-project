@@ -45,7 +45,7 @@ jobs:
     - name: docker build and push
       run: |
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        docker build -t ${{ secrets.DOCKER_REPO }}/sns-project-springboot .
+        docker build --platform=linux/arm64 -t ${{ secrets.DOCKER_REPO }}/sns-project-springboot .
         docker push ${{ secrets.DOCKER_REPO }}/sns-project-springboot
 
     ## docker compose up
