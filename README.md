@@ -1,5 +1,9 @@
 # SNS 프로젝트
 
+### 🟢 Swagger
+
+http://kym9129.ddns.net:4002/swagger-ui/index.html
+
 ### 🥅 개요 / 목적
 
 - 대용량 시스템을 다루기 위한 데이터베이스 기본 지식 학습용 **SNS 구현 프로젝트**
@@ -24,7 +28,8 @@
     - 좋아요 기능 : 포스트에 좋아요 등록
 
 ### 🏗️ 프로젝트 구조
-<img width="940" alt="image" src="https://github.com/kym9129/fastcampus-mysql-init-project/assets/72649415/0a2f05d5-e70a-4dfa-b29f-8636386b0477">
+![image](https://github.com/kym9129/fastcampus-mysql-init-project/assets/72649415/35feae54-b6d7-483a-a45b-8563b0c72cf2)
+
 
 
 ### ⚒️ 사용 기술
@@ -49,17 +54,21 @@ JAVA 17, SpringBoot 2.7.2, MySQL 8.0, JPA, QueryDSL, Redis 6, EasyRandom, Github
 - **Easy-Random을 사용하여 테스트용 예제 객체를 만들어주는 ObjectMother 구현 (🔗[code](https://github.com/kym9129/fastcampus-mysql-init-project/blob/master/src/test/java/com/example/fastcampusmysql/utill/MemberFixtureFactory.java))**
     - 테스트에 필요한 랜덤 데이터를 빠르게 생성하여 테스트코드 작성 시간 감소
 
-### 🔥 트러블 슈팅
-- No matching manifest for linux/armv7 in the manifest list entries
-    - 문제상황 : 배포 서버에서 docker compose up 하는 도중 발생
-    - 원인 : 배포서버에 설치한 Rasbian OS는 ARM 32비트였으나 컨테이너를 띄우려는 도커 이미지들은 64비트를 지원
-    - 해결 : 64비트 Ubuntu 설치
+### 🔥 주요 트러블 슈팅
 
-- No Default constructor for entity
+- **no matching manifest for linux/arm/v7 in the manifest list entries**
+    - 문제상황 : 배포서버에서 컨테이너 실행 중 발생
+    - 원인 : 호스트에서 사용하는 RasbianOS는 ARM32였으나 컨테이너에 띄울 도커이미지들은 ARM64부터 지원
+    - 해결 : 하드웨어는 ARM64였기 때문에 Ubuntu 64bit를 호스트에 재설치
+- **The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested**
+    - 문제상황 : 배포서버에서 애플리케이션의 컨테이너 실행 중 발생
+    - 원인 : 애플리케이션을 도커로 빌드하면 기본 amd용으로 빌드되는데, 배포서버 호스트는 arm이어서 충돌 발생
+    - 해결 : 도커 빌드 시 `—-platform=linux/arm64` 옵션을 추가
+- **No Default constructor for entity**
     - 문제상황 : 스프링 컨테이너 실행 시 발생
     - 원인 : hibernate에서 기본생성자를 필요로 하는데 Entity객체에 기본생성자가 없어서 발생한 에러
-    - 해결 : `@NoArgsConstructor`를 사용하면서 entity객체의 불변성을 보장하기 위해 `AccessLevel을 PROECTED`로 설정 (🔗 [code](https://github.com/kym9129/fastcampus-mysql-init-project/blob/4c370aa3436c2f68fa5aef0364b89dbebec539af/src/main/java/com/example/fastcampusmysql/domain/member/entity/Member.java#L17))
-- NoSuchMethodException
+    - 해결 : `@NoArgsConstructor`를 사용하면서 entity객체의 불변성을 보장하기 위해 `AccessLevel을 PROECTED`로 설정 (🔗 [코드](https://github.com/kym9129/fastcampus-mysql-init-project/blob/4c370aa3436c2f68fa5aef0364b89dbebec539af/src/main/java/com/example/fastcampusmysql/domain/member/entity/Member.java#L17))
+- **NoSuchMethodException**
     - 문제상황 : QueryDSL의 select문을 fetch하는 도중에 발생
     - 원인 : Projection용 DTO객체를 record 클래스로 사용하였음. record는 필드가 없이 생성자를 통해서만 데이터를 받는 구조이지만 `Projections.fields()`는 필드 주입 방식이기 때문에 에러가 발생했음.
-    - 해결 : `Projections.constructor()`로 변경 (🔗 [code](https://github.com/kym9129/fastcampus-mysql-init-project/blob/4c370aa3436c2f68fa5aef0364b89dbebec539af/src/main/java/com/example/fastcampusmysql/domain/post/repository/PostRepositoryCustomImpl.java#L23))
+    - 해결 : `Projections.constructor()`로 변경 (🔗 [코드](https://github.com/kym9129/fastcampus-mysql-init-project/blob/4c370aa3436c2f68fa5aef0364b89dbebec539af/src/main/java/com/example/fastcampusmysql/domain/post/repository/PostRepositoryCustomImpl.java#L23))
