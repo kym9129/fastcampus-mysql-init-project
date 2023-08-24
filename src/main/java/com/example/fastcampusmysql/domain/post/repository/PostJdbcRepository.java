@@ -18,7 +18,7 @@ public class PostJdbcRepository {
     public void bulkInsert(List<Post> posts) {
         String sql = String.format("""
                     INSERT INTO `%s` (member_id, contents, created_date, created_at, updated_at)
-                    VALUES (:memberId, :contents, :createdDate, :createdAt, :updatedAt)
+                    VALUES (:memberId, :contents, :createdDate, NOW(), NOW())
                     """, TABLE);
 
         SqlParameterSource[] params = posts

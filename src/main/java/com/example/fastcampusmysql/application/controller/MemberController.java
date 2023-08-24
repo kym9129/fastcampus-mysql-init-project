@@ -42,4 +42,9 @@ public class MemberController {
     public List<MemberNicknameHistoryDto> getNicknameHistories(@PathVariable Long memberId) {
         return memberReadService.getNicknameHistory(memberId);
     }
+
+    @PostMapping("/bulk-insert/{amount}")
+    public void bulkInsert(@PathVariable Long amount){
+        memberWriteService.bulkInsert(amount);
+    }
 }
