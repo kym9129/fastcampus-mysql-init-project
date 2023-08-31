@@ -6,6 +6,7 @@ import com.example.fastcampusmysql.domain.member.dto.RegisterMemberCommand;
 import com.example.fastcampusmysql.domain.member.service.MemberReadService;
 import com.example.fastcampusmysql.domain.member.service.MemberWriteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class MemberController {
     // -> DTO를 사용하는 것으로 해결
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public MemberDto register(@RequestBody RegisterMemberCommand command){
         return memberWriteService.register(command);
     }
@@ -32,7 +34,7 @@ public class MemberController {
         return memberReadService.getMember(id);
     }
 
-    @PostMapping("/{id}/nickname")
+    @PutMapping("/{id}/nickname")
     public MemberDto changeNickname(@PathVariable Long id, @RequestBody String nickname) {
         memberWriteService.changeNickname(id, nickname);
         return memberReadService.getMember(id);
