@@ -1,9 +1,5 @@
 # SNS 프로젝트
 
-### 🟢 Swagger
-
-http://kym9129.ddns.net:4002/swagger-ui/index.html
-
 ### 🥅 개요 / 목적
 
 - 대용량 시스템을 다루기 위한 데이터베이스 기본 지식 학습용 **SNS 구현 프로젝트**
