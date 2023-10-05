@@ -37,8 +37,8 @@ JAVA 17, SpringBoot 2.7.2, MySQL 8.0, JPA, QueryDSL, Redis 6, EasyRandom, Github
 - **하나의 포스트에 여러명이 동시에 ‘좋아요’를 누르는 동시성 이슈 고려**
     - v2 : ‘좋아요’ 수 집계 저장위치 분리
         - v.2.2 : Redis의 Set 자료구조를 이용해 ‘좋아요’ 기능 구현
-            - 좋아요 추가 : `SADD post:like:{memberId} {postId}` (🔗[code](https://github.com/kym9129/fastcampus-mysql-init-project/blob/4c370aa3436c2f68fa5aef0364b89dbebec539af/src/main/java/com/example/fastcampusmysql/domain/post/service/PostLikeWriteService.java#L24))
-            - 좋아요 수 조회 : `SCARD post:like:{memberId}` (🔗[code](https://github.com/kym9129/fastcampus-mysql-init-project/blob/4c370aa3436c2f68fa5aef0364b89dbebec539af/src/main/java/com/example/fastcampusmysql/domain/post/service/PostReadService.java#L41))
+            - 좋아요 추가 : `SADD post:like:{postId} {memberId}` (🔗[code](https://github.com/kym9129/fastcampus-mysql-init-project/blob/4c370aa3436c2f68fa5aef0364b89dbebec539af/src/main/java/com/example/fastcampusmysql/domain/post/service/PostLikeWriteService.java#L24))
+            - 좋아요 수 조회 : `SCARD post:like:{postId}` (🔗[code](https://github.com/kym9129/fastcampus-mysql-init-project/blob/4c370aa3436c2f68fa5aef0364b89dbebec539af/src/main/java/com/example/fastcampusmysql/domain/post/service/PostReadService.java#L41))
             - 포스트 목록 조회 응답시간 단축 (비교시간 추가)
         - v2.1
             - ‘좋아요’를 누를 때마다 별도 저장소에 insert하여 Race Condition 발생하지 않도록 함.
