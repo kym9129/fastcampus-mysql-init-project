@@ -1,12 +1,15 @@
-package com.example.fastcampusmysql.utill;
+package com.example.fastcampusmysql.util;
 
 import com.example.fastcampusmysql.domain.member.entity.Member;
 import com.example.fastcampusmysql.domain.member.entity.MemberNicknameHistory;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.jeasy.random.randomizers.time.LocalDateTimeRandomizer;
+import org.jeasy.random.randomizers.range.LocalDateRangeRandomizer;
+import org.jeasy.random.randomizers.range.LocalDateTimeRangeRandomizer;
+import org.jeasy.random.randomizers.range.LongRangeRandomizer;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,16 +23,21 @@ public class MemberFixtureFactory {
     // -> fixture 라이브러리를 많이 사용한다. (ex. easy-random)
 
     public static Member create(){
-//        Predicate<Field> idPredicate = named("id")
-//                .and(ofType(Long.class))
-//                .and(inClass(Member.class));
+        return MemberFixtureFactory.get().nextObject(Member.class);
+    }
+
+    public static EasyRandom get() {
         EasyRandomParameters param = new EasyRandomParameters()
 //                .excludeField(idPredicate) // id is null
-                .randomize(Long.class, new PositiveLongRandomizer()) // 양수만
+                .randomize(Long.class, new LongRangeRandomizer(1L, Long.MAX_VALUE))
                 .stringLengthRange(5, 10)
-                .randomize(LocalDateTime.class, new LocalDateTimeRandomizer())
+//                .randomize(LocalDateTime.class, new LocalDateTimeRandomizer())
+                .randomize(LocalDate.class, new LocalDateRangeRandomizer(LocalDate.of(1900, 1, 1), LocalDate.of(2015, 12,31)))
+                .randomize(LocalDateTime.class, new LocalDateTimeRangeRandomizer(LocalDateTime.of(2023, 1, 1, 0, 0), LocalDateTime.of(2023,4,30, 23, 59)))
+                .randomize(field -> field.getName().equals("updatedAt"), new LocalDateTimeRangeRandomizer(LocalDateTime.of(2023, 5, 1, 0, 0), LocalDateTime.of(2023,7,30, 23, 59)))
                 ;
-        return new EasyRandom(param).nextObject(Member.class);
+
+        return new EasyRandom(param);
     }
 
     public static Member create(Long seed){ // todo: 시드도 factory 내에서 랜덤하게 생성

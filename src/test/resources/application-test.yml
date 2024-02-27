@@ -12,6 +12,12 @@ spring:
       username: sa
       password:
 
+  redis:
+    host: localhost
+    port: 6379
+    key:
+      post_like_prefix: "post:like:"
+
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
