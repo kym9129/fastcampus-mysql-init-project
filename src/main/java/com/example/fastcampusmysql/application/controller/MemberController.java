@@ -45,8 +45,8 @@ public class MemberController {
         return memberReadService.getNicknameHistory(memberId);
     }
 
-    @PostMapping("/bulk-insert/{amount}")
-    public void bulkInsert(@PathVariable Long amount){
-        memberWriteService.bulkInsert(amount);
-    }
+//    @PostMapping("/bulk-insert/{amount}")
+//    public void bulkInsert(@PathVariable Long amount){
+//        memberWriteService.bulkInsert(amount);
+//    }
 }
