@@ -1,6 +1,7 @@
 package com.example.fastcampusmysql.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,11 @@ public class LoggingFilter implements Filter {
         String method = servletRequest.getMethod();
         String uri = servletRequest.getRequestURI();
         String queryString = servletRequest.getQueryString();
+
+        if (StringUtils.contains(uri, "swagger")) {
+            chain.doFilter(request, response);
+            return;
+        }
 
         log.info("### 요청 정보 ###");
         log.info("uri: [{}] {}", method, uri);

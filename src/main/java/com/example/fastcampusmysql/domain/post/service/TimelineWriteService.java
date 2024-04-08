@@ -1,6 +1,7 @@
 package com.example.fastcampusmysql.domain.post.service;
 
 import com.example.fastcampusmysql.domain.post.entity.Timeline;
+import com.example.fastcampusmysql.domain.post.repository.TimelineJdbcRepository;
 import com.example.fastcampusmysql.domain.post.repository.TimelineRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import java.util.List;
 @Service
 public class TimelineWriteService {
     private final TimelineRepository timelineRepository;
+    private final TimelineJdbcRepository timelineJdbcRepository;
 
     /**
      * 작성한 게시물을 팔로워들의 타임라인으로 배달
@@ -22,7 +24,8 @@ public class TimelineWriteService {
                 .map((memberId) -> toTimeline(postId, memberId))
                 .toList();
 
-        timelineRepository.saveAll(timelines);
+//        timelineRepository.saveAll(timelines);
+        timelineJdbcRepository.bulkInsert(timelines);
     }
 
     private Timeline toTimeline(Long postId, Long memberId) {
