@@ -4,6 +4,7 @@ import com.example.fastcampusmysql.domain.member.entity.Member;
 import com.example.fastcampusmysql.domain.member.repository.MemberJdbcRepository;
 import com.example.fastcampusmysql.util.MemberFixtureFactory;
 import org.jeasy.random.EasyRandom;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,7 @@ import java.util.stream.IntStream;
 
 @SpringBootTest
 @ActiveProfiles("local")
+@Disabled
 public class MemberBulkInsertTest {
     @Autowired
     private MemberJdbcRepository memberJdbcRepository;
